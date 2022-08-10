@@ -1,9 +1,11 @@
 package com.bignerdranch.android.beatbox;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +45,7 @@ public class BeatBoxFragment extends Fragment {
 
         binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         binding.recyclerView.setAdapter(new SoundAdapter(mBeatBox.getSounds()));
+        binding.seekBar.setOnSeekBarChangeListener(new SeekBarListener());
         return binding.getRoot();
     }
 
@@ -92,6 +95,25 @@ public class BeatBoxFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mSounds.size();
+        }
+    }
+
+    private class SeekBarListener implements SeekBar.OnSeekBarChangeListener{
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            float rate = (float) progress/100;
+            mBeatBox.setRate(rate < 0.35 ? 0.35f : rate);
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
         }
     }
 }
